@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>MyLibrary Clean Arch - Tester</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background: #f4f4f9;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            flex: 1;
+        }
+
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #0078d4;
+            padding-bottom: 10px;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #0078d4;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+            button:hover {
+                background: #005a9e;
+            }
+
+        .log {
+            background: #222;
+            color: #00ff00;
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🚀 MyLibrary App Tester (Port 5144)</h1>
+
+    <div class="container">
+        <!-- TESTER REST API -->
+        <div class="card">
+            <h2>1. REST API (Status)</h2>
+            <p>Kirim pesan ke <code>/api/status</code></p>
+            <input type="text" id="apiInput" placeholder="Ketik pesan API..." value="Halo dari REST!">
+            <button onclick="sendApi()">Kirim POST Request</button>
+            <div id="apiLog" class="log">Menunggu aksi...</div>
+        </div>
+
+        <!-- TESTER WEBSOCKET -->
+        <div class="card">
+            <h2>2. WebSocket (Echo)</h2>
+            <p>Kirim pesan ke <code>/ws</code></p>
+            <input type="text" id="wsInput" placeholder="Ketik pesan WebSocket..." value="Halo dari WebSocket!">
+            <button onclick="sendWs()">Kirim via WS</button>
+            <div id="wsLog" class="log">Koneksi WS: Terputus</div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/api/status';
+        const WS_URL = `ws://${window.location.host}/ws`;
+        let socket;
+
+        // --- LOGIC API ---
+        async function sendApi() {
+            const msg = document.getElementById('apiInput').value;
+            const logDiv = document.getElementById('apiLog');
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ Message: msg })
+                });
+                const data = await response.json();
+                logDiv.innerHTML += `<br>> Sent: ${msg}<br><span style="color:cyan">< Response: ${data.status}</span>`;
+            } catch (err) {
+                logDiv.innerHTML += `<br><span style="color:red">! Error: ${err.message}</span>`;
+            }
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        // --- LOGIC WEBSOCKET ---
+        function initWs() {
+            const logDiv = document.getElementById('wsLog');
+            socket = new WebSocket(WS_URL);
+
+            socket.onopen = () => {
+                logDiv.innerHTML = '<span style="color:cyan">✅ Terhubung ke Server!</span>';
+            };
+
+            socket.onmessage = (event) => {
+                logDiv.innerHTML += `<br><span style="color:yellow">< Server: ${event.data}</span>`;
+                logDiv.scrollTop = logDiv.scrollHeight;
+            };
+
+            socket.onclose = () => {
+                logDiv.innerHTML += '<br><span style="color:red">❌ Koneksi Terputus.</span>';
+            };
+        }
+
+        function sendWs() {
+            const msg = document.getElementById('wsInput').value;
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(msg);
+                document.getElementById('wsLog').innerHTML += `<br>> Client: ${msg}`;
+            } else {
+                alert('WS Belum Terhubung! Coba refresh.');
+            }
+        }
+
+        // Jalankan WS saat page load
+        initWs();
+    </script>
+</body>
+</html>

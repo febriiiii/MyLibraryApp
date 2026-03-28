@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="MyLibrary.Api/MyLibrary.Api.csproj" />
+  <Project Path="MyLibrary.Application/MyLibrary.Application.csproj" />
+  <Project Path="MyLibrary.Core/MyLibrary.Core.csproj" />
+  <Project Path="MyLibrary.Domain/MyLibrary.Domain.csproj" />
+  <Project Path="MyLibrary.Infra.Data/MyLibrary.Infra.Data.csproj" />
+  <Project Path="MyLibrary.IoC/MyLibrary.IoC.csproj" />
+</Solution>
