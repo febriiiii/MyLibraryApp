@@ -135,13 +135,13 @@ nvm install 22 && nvm use 22
 
 * **Express Template:**
   ```bash
-  cd /mnt/c/Users/point/source/repos/visiontech/express-template
+  cd /mnt/{BASE_DIR}/visiontech/express-template
   rm -rf node_modules package-lock.json
   npm install && npm run local
   ```
 * **Vue AntD Template:**
   ```bash
-  cd /mnt/c/Users/point/source/repos/visiontech/vue-antd-template
+  cd /mnt/{BASE_DIR}/visiontech/vue-antd-template
   rm -rf node_modules package-lock.json
   npm install && npm run sample
   ```
@@ -156,7 +156,7 @@ nvm install 22 && nvm use 22
    ```
 2. **Run Project:**
    ```bash
-   cd /mnt/c/Users/point/source/repos/visiontech/MyLibraryApp/
+   cd /mnt/{BASE_DIR}/visiontech/MyLibraryApp/
    dotnet run --project MyLibrary.Api --launch-profile "http"
    ```
 
