@@ -143,7 +143,9 @@ nvm install 22 && nvm use 22
   ```bash
   cd /mnt/{BASE_DIR}/visiontech/vue-antd-template
   rm -rf node_modules package-lock.json
-  npm install && npm run sample
+  npm install
+  cd apps
+  npm run sample
   ```
 
 ---
