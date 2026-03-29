@@ -17,7 +17,7 @@ and explanation of **Express.js Backend**, **Vue Ant Design Frontend**
   pada file express-template/index.js
   ```
   
-  **replace CORS_OPTION pada env yg digunakan**
+  **replace CORS_OPTION in the env used**
   ```config
   CORS_OPTIONS='{
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
