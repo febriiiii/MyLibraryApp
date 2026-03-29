@@ -1,19 +1,42 @@
 # 🚀 VisionTech Full-Stack Project
 
-Repository ini berisi ekosistem aplikasi yang terdiri dari **Express.js Backend**, **Vue Ant Design Frontend**, dan **C# .NET API** dengan arsitektur **DDD (Clean Architecture)**.
+This repository contains the **C# .NET API** ecosystem with **DDD (Clean Architecture)** architecture.
+and explanation of **Express.js Backend**, **Vue Ant Design Frontend**
 
 ---
+## 🛠️ WSL Internal IP Set
+<details>
+<summary>Click to view code snippet</summary>
+```javascript
+* replace func server.listen()
+  server.listen(API_PORT, '0.0.0.0', () => {
+    console.info(`[(${process.env.NODE_ENV}) ${process.env.APP_VERSION}] listening on port ${API_PORT}, https=${Boolean(HTTPS_CERTIFICATE)}`)
+  })
+  pada file express-template/index.js
+  ```
+  ```config
+  replace CORS_OPTION pada env yg digunakan
+  CORS_OPTIONS='{
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204,
+    "credentials": true,
+    "origin": ["http://127.0.0.1:8080", "http://localhost:8080", "https://127.0.0.1:8080", "https://localhost:8080"]
+  }'
+  ```
 
-## 🛠️ Perbaikan Krusial (Debug OTP)
+</details>
 
-Terdapat update pada logic OTP untuk menangani *type mismatch* (Integer vs String) yang sering menyebabkan crash pada Library Keyv/Auth saat validasi ID.
+## 🛠️ Crucial Fix (OTP Debug)
+
+There is an update to the OTP logic to handle the *type mismatch* (Integer vs String) that often causes crashes in the Keyv/Auth Library during ID validation.
 
 **File Path:** `express_template/base/controller/auth/own.js`
 
-Ganti fungsi `otp` yang lama dengan kode berikut:
+Replace the old `otp` function with the following code:
 
 <details>
-<summary>Klik untuk melihat snippet kode OTP</summary>
+<summary>Click to view code snippet</summary>
 
 ```javascript
 const otp = async (req, res) => {
@@ -67,7 +90,7 @@ const otp = async (req, res) => {
     if (isOtpValid) {
       console.log('Step 7 - OTP Valid, creating token...')
 
-      // FIX: Pastikan ID adalah STRING untuk mencegah crash pada Keyv storage
+      // FIX: Make sure ID is STRING to prevent crash on Keyv storage
       const userForToken = {
         ...user,
         id: String(user.id),
@@ -97,12 +120,12 @@ const otp = async (req, res) => {
 
 ---
 
-## 💻 Panduan Run di Windows (Native)
+## 💻 Run Guide on Windows (Native)
 
-Gunakan **PowerShell** untuk menjalankan langkah-langkah berikut:
+Use **PowerShell** to perform the following steps:
 
 1. **Install Dependencies:**
-   Jalankan `npm install` di setiap root folder project dan folder `apps`.
+   Run `npm install` in each project root folder and `apps` folder.
 2. **Run Backend (Express):**
    ```powershell
    cd express-template
@@ -116,10 +139,9 @@ Gunakan **PowerShell** untuk menjalankan langkah-langkah berikut:
 
 ---
 
-## 🐧 Panduan Run di WSL (Ubuntu)
+## 🐧 Run Guide on WSL (Ubuntu)
 
-### 1. Konfigurasi Awal
-* Ganti semua `localhost` menjadi `0.0.0.0` pada config express & vue agar bisa diakses dari browser Windows.
+### 1. Initial Configuration
 * Update Linux: `sudo apt update`
 
 ### 2. Setup Node.js (V22)
@@ -130,20 +152,21 @@ source ~/.bashrc
 nvm install 22 && nvm use 22
 ```
 
-### 3. Jalankan Node.js Stack
-**PENTING:** Hapus folder `node_modules` bawaan Windows karena perbedaan binary (*invalid ELF header*).
+### 3. Run Node.js Stack
+**IMPORTANT:** Delete the default Windows `node_modules` folder due to binary differences (*invalid ELF header*).
 
 * **Express Template:**
   ```bash
   cd /mnt/{BASE_DIR}/visiontech/express-template
   rm -rf node_modules package-lock.json
-  npm install && npm run local
+  npm install #[root & apps] 
+  npm run local
   ```
 * **Vue AntD Template:**
   ```bash
   cd /mnt/{BASE_DIR}/visiontech/vue-antd-template
   rm -rf node_modules package-lock.json
-  npm install
+  npm install #[root & apps]
   cd apps
   npm run sample
   ```
@@ -165,9 +188,9 @@ nvm install 22 && nvm use 22
 ---
 
 ## 📝 Troubleshooting & Tips
-* **Invalid ELF Header:** Hapus `node_modules` lalu `npm install` ulang di dalam WSL.
-* **Akses Browser:** Gunakan `http://localhost:PORT` di Edge Windows.
-* **Node Version:** Pastikan `node -v` menunjukkan versi **22.x.x**.
+* **Invalid ELF Header:** Remove `node_modules` and then `npm install` again in WSL.
+* **Browser Access:** Use `http://localhost:PORT` in Edge Windows.
+* **Node Version:** Make sure `node -v` shows version **22.x.x**.
 
 ---
 *Last Updated: 2026-03-29*
