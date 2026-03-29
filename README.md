@@ -7,13 +7,15 @@ and explanation of **Express.js Backend**, **Vue Ant Design Frontend**
 ## 🛠️ WSL Internal IP Set
 <details>
 <summary>Click to view code snippet</summary>
-```javascript
-* replace func server.listen()
+
+  ```javascript
+  * replace func server.listen()
   server.listen(API_PORT, '0.0.0.0', () => {
     console.info(`[(${process.env.NODE_ENV}) ${process.env.APP_VERSION}] listening on port ${API_PORT}, https=${Boolean(HTTPS_CERTIFICATE)}`)
   })
   pada file express-template/index.js
   ```
+
   ```config
   replace CORS_OPTION pada env yg digunakan
   CORS_OPTIONS='{
